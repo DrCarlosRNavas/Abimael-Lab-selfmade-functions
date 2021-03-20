@@ -1,0 +1,31 @@
+#code to unify layout with Isaac's layout
+
+#first we selecto the data for the barplot (mean and SEM)
+barplot_XXX <- summary_ratio %>% filter (ion == "M0") %>% 
+  group_by(Tissue, GENOTYPE) %>%
+  ggplot(aes(x = GENOTYPE, y = ave_ratio_omega3, fill = GENOTYPE)) +
+  geom_bar(show.legend = FALSE, stat="identity", width = 0.85, position = position_dodge(0.8))+
+  facet_wrap(~Tissue, strip.position = "bottom")+
+  geom_errorbar(aes(ymin=ave_ratio_omega3, ymax=(ave_ratio_omega3 + sem_ratio_omega3)), width = 0.2) +
+  
+# Now select the data for the geompoints and for the statistical analysis with ggpubr
+  geom_point(aes(y=ratio_omega3), data = data_for_M0,  stat="identity", position_jitterdodge(jitter.width = 0.18,dodge.width=0.8), alpha=0.5, size=3, shape = 21)+
+  #Name axis if needed
+  xlab(NULL)+
+  #ylab("Omega6 (%)")+
+#specific layout options for Abimael 
+
+  theme_classic()+
+  scale_color_manual(values=c("dodgerblue1", "red"), name= "Animal")+ 
+  scale_fill_manual(values=c("dodgerblue1", "red"), name= "Animal")+
+  #ahora vienen los parametros para los axis
+  scale_y_continuous(name = "% Omega3", breaks=seq(0,80,20))+
+  theme(axis.title.y = element_text(color = "black"),
+        axis.title.y.right = element_text(color = "blue"))+
+  theme(axis.text=element_text(size=12, color = "black",family="Helvetica"), #Helvetica because ggsave has a hard time saving it in Arial. 
+        axis.title=element_text(size=12,face="bold", color = "black"))+
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust = 1.2,color = "black"))+ 
+  theme(axis.line = element_line(size = 0.3, color = "black"),axis.ticks =  element_line(colour = "black", size = 0.3))+
+  theme(axis.ticks.length = unit(0.5, "cm"))+
+  theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank())+
+  theme(legend.position = "none")
