@@ -1,6 +1,6 @@
 #code to unify layout with Isaac's layout
 
-#first we selecto the data for the barplot (mean and SEM)
+#first we select the data for the barplot (mean and SEM)
 barplot_XXX <- summary_ratio %>% filter (ion == "M0") %>% 
   group_by(Tissue, GENOTYPE) %>%
   ggplot(aes(x = GENOTYPE, y = ave_ratio_omega3, fill = GENOTYPE)) +
